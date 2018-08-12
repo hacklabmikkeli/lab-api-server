@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+  <changeSet id="initial" author="Heikki Kurhinen">
+    <createTable tableName="systemsetting">
+      <column name="id" type="uuid">
+        <constraints unique="true" nullable="false" primaryKey="true"/>
+      </column>
+      <column name="settingkey" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="value" type="longtext">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    
+    <addUniqueConstraint constraintName="UN_SYSTEM_SETTING_SETTING_KEY" columnNames="settingkey" tableName="systemsetting"/>
+  
+    <createTable tableName="invoice">
+      <column name="id" type="uuid">
+        <constraints unique="true" nullable="false" primaryKey="true"/>
+      </column>
+      <column name="userid" type="uuid">
+        <constraints nullable="false" />
+      </column>
+      <column name="message" type="longtext">
+        <constraints nullable="false"/>
+      </column>
+      <column name="amount" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="paid" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="due" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+      <column name="createdat" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+      <column name="modifiedat" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <createTable tableName="announcement">
+      <column name="id" type="uuid">
+        <constraints unique="true" nullable="false" primaryKey="true"/>
+      </column>
+      <column name="content" type="longtext">
+        <constraints nullable="false"/>
+      </column>
+      <column name="type" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="createdat" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+      <column name="modifiedat" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <createTable tableName="announcementrecipient">
+      <column name="id" type="uuid">
+        <constraints unique="true" nullable="false" primaryKey="true"/>
+      </column>
+      <column name="recipientid" type="uuid">
+        <constraints nullable="false" />
+      </column>
+      <column name="announcement_id" type="uuid">
+        <constraints nullable="false" foreignKeyName="fk_accouncementrecipient_announcement" referencedTableName="announcement" referencedColumnNames="id" />
+      </column>
+    </createTable>
+
+    <createTable tableName="door">
+      <column name="id" type="uuid">
+        <constraints unique="true" nullable="false" primaryKey="true"/>
+      </column>
+      <column name="name" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="lastping" type="timestamp">
+        <constraints nullable="true"/>
+      </column>
+      <column name="createdat" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+      <column name="modifiedat" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    
+    <createTable tableName="dooraction">
+      <column name="id" type="uuid">
+        <constraints unique="true" nullable="false" primaryKey="true"/>
+      </column>
+      <column name="userid" type="uuid">
+        <constraints nullable="false" />
+      </column>
+      <column name="type" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="door_id" type="uuid">
+        <constraints foreignKeyName="fk_dooraction_door" referencedTableName="door" referencedColumnNames="id"/>
+      </column>
+      <column name="createdat" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+</databaseChangeLog>
