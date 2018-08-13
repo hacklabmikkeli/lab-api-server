@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import javax.ws.rs.core.Response;
 
 import fi.hacklabmikkeli.labapi.server.doors.DoorController;
+import fi.hacklabmikkeli.labapi.server.mqtt.MqttController;
 import fi.hacklabmikkeli.labapi.server.persistence.model.DoorActionType;
 import fi.hacklabmikkeli.labapi.server.rest.model.Door;
 import fi.hacklabmikkeli.labapi.server.rest.model.DoorAction;
@@ -24,11 +25,16 @@ import fi.hacklabmikkeli.labapi.server.rest.translate.DoorTranslator;
 @Stateful
 public class DoorsApiImpl extends AbstractApi implements DoorsApi {
 
+  public static final String DOOR_OPEN_MESSAGE = "1";
+
   @Inject
   private DoorController doorController;
 
   @Inject
   private DoorTranslator doorTranslator;
+
+  @Inject
+  private MqttController mqttController;
 
   @Override
   public Response createDoor(@Valid Door payload) throws Exception {
@@ -55,8 +61,7 @@ public class DoorsApiImpl extends AbstractApi implements DoorsApi {
 
     switch (payload.getType()) {
       case OPEN:
-        //TODO: handle door open
-        return createOk(doorTranslator.translateDoorAction(doorController.createDoorAction(doorEntity, DoorActionType.OPEN, getLoggerUserId())));
+        return handleDoorOpen(doorEntity);
       default:
         return createBadRequest("Unknown door action");
     }
@@ -104,6 +109,19 @@ public class DoorsApiImpl extends AbstractApi implements DoorsApi {
     }
 
     return createOk(doorTranslator.translateDoor(doorController.updateDoor(doorEntity, payload.getName(), payload.getLastPing())));
+  }
+
+  /**
+   * Handles door opening request
+   * 
+   * @param doorEntity door entity to open
+   * 
+   * @return response
+   */
+  private Response handleDoorOpen(fi.hacklabmikkeli.labapi.server.persistence.model.Door doorEntity) {
+    fi.hacklabmikkeli.labapi.server.persistence.model.DoorAction doorActionEntity =  doorController.createDoorAction(doorEntity, DoorActionType.OPEN, getLoggerUserId());
+    mqttController.publishMessage(String.format("door/%s", doorEntity.getId()), DOOR_OPEN_MESSAGE);
+    return createOk(doorTranslator.translateDoorAction(doorActionEntity));
   }
 
 }

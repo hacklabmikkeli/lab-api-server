@@ -13,6 +13,7 @@ import javax.persistence.PreUpdate;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
 /**
  * @author Heikki Kurhinen
@@ -25,8 +26,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class Invoice {
 
   @Id
+  @Type(type="org.hibernate.type.PostgresUUIDType")
   private UUID id;
 
+  @Type(type="org.hibernate.type.PostgresUUIDType")
   @Column (nullable = false)
   private UUID userId;
 

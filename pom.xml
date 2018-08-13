@@ -77,6 +77,10 @@
     <!-- Slugify -->
     
     <slugify.version>2.2</slugify.version>
+
+    <!-- Paho -->
+
+    <paho.version>1.2.0</paho.version>
     
   </properties>
 
@@ -334,6 +338,14 @@
       <artifactId>mailgun</artifactId>
       <version>${mailgun.version}</version>
     </dependency>
-    
+
+    <!-- Paho -->
+
+    <dependency>
+      <groupId>org.eclipse.paho</groupId>
+      <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
+      <version>${paho.version}</version>
+    </dependency>
+
   </dependencies>
 </project>

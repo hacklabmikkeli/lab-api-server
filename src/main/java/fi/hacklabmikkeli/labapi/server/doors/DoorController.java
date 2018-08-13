@@ -102,6 +102,17 @@ public class DoorController {
   }
 
   /**
+   * Updates doors last ping
+   * 
+   * @param door door to update
+   * @param lastPing new last ping for the door 
+   */
+  public Door updateDoorLastPing(Door door, OffsetDateTime lastPing) {
+    doorDAO.updateLastPing(door, lastPing);
+    return door;
+  }
+
+  /**
    * Deletes door
    * 
    * @param door Door to delete 
