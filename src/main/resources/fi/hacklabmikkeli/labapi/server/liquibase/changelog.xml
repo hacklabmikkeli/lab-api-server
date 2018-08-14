@@ -16,30 +16,21 @@
     
     <addUniqueConstraint constraintName="UN_SYSTEM_SETTING_SETTING_KEY" columnNames="settingkey" tableName="systemsetting"/>
   
-    <createTable tableName="invoice">
+    <createTable tableName="member">
       <column name="id" type="uuid">
         <constraints unique="true" nullable="false" primaryKey="true"/>
       </column>
-      <column name="userid" type="uuid">
-        <constraints nullable="false" />
+      <column name="stripecustomerid" type="varchar(255)">
+        <constraints nullable="true" />
       </column>
-      <column name="message" type="longtext">
-        <constraints nullable="false"/>
-      </column>
-      <column name="amount" type="bigint">
-        <constraints nullable="false"/>
-      </column>
-      <column name="paid" type="boolean">
-        <constraints nullable="false"/>
-      </column>
-      <column name="due" type="timestamp">
+      <column name="status" type="varchar(255)">
         <constraints nullable="false"/>
       </column>
       <column name="createdat" type="timestamp">
         <constraints nullable="false"/>
       </column>
-      <column name="modifiedat" type="timestamp">
-        <constraints nullable="false"/>
+      <column name="approvedat" type="timestamp">
+        <constraints nullable="true"/>
       </column>
     </createTable>
 

@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.keycloak.KeycloakPrincipal;
@@ -333,6 +334,21 @@ public abstract class AbstractApi {
       .map(UUID::fromString)
       .filter(Objects::nonNull)
       .collect(Collectors.toSet());
+  }
+
+  /**
+   * Translates an enum into another enum with same values
+   * 
+   * @param targetClass target enum class
+   * @param original original enum
+   * @return translated enum
+   */
+  protected <E extends Enum<E>> E translateEnum(Class<E> targetClass, Enum<?> original) {
+    if (original == null) {
+      return null;
+    }
+    
+    return EnumUtils.getEnum(targetClass, original.name());
   }
 }
 
