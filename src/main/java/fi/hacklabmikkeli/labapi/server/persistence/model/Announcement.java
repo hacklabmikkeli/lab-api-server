@@ -13,7 +13,6 @@ import javax.persistence.PreUpdate;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Type;
 
 /**
  * @author Heikki Kurhinen
@@ -26,7 +25,7 @@ import org.hibernate.annotations.Type;
 public class Announcement {
 
   @Id
-  @Type(type="org.hibernate.type.PostgresUUIDType")
+  @Column(columnDefinition = "BINARY(16)")
   private UUID id;
 
   @Column (nullable = false)

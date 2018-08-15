@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -27,7 +26,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class Door {
 
   @Id
-  @Type(type="org.hibernate.type.PostgresUUIDType")
+  @Column(columnDefinition = "BINARY(16)")
   private UUID id;
 
   @NotNull

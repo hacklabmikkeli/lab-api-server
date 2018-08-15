@@ -28,7 +28,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class SystemSetting {
 
   @Id
-  @Type(type="org.hibernate.type.PostgresUUIDType")
+  @Column(columnDefinition = "BINARY(16)")
   private UUID id;
 
   @Column(nullable = false, name = "settingKey")

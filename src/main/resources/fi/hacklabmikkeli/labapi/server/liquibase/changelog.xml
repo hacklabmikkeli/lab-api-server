@@ -3,7 +3,7 @@
 
   <changeSet id="initial" author="Heikki Kurhinen">
     <createTable tableName="systemsetting">
-      <column name="id" type="uuid">
+      <column name="id" type="BINARY(16)">
         <constraints unique="true" nullable="false" primaryKey="true"/>
       </column>
       <column name="settingkey" type="varchar(255)">
@@ -17,7 +17,7 @@
     <addUniqueConstraint constraintName="UN_SYSTEM_SETTING_SETTING_KEY" columnNames="settingkey" tableName="systemsetting"/>
   
     <createTable tableName="member">
-      <column name="id" type="uuid">
+      <column name="id" type="BINARY(16)">
         <constraints unique="true" nullable="false" primaryKey="true"/>
       </column>
       <column name="stripecustomerid" type="varchar(255)">
@@ -35,7 +35,7 @@
     </createTable>
 
     <createTable tableName="announcement">
-      <column name="id" type="uuid">
+      <column name="id" type="BINARY(16)">
         <constraints unique="true" nullable="false" primaryKey="true"/>
       </column>
       <column name="content" type="longtext">
@@ -53,19 +53,19 @@
     </createTable>
 
     <createTable tableName="announcementrecipient">
-      <column name="id" type="uuid">
+      <column name="id" type="BINARY(16)">
         <constraints unique="true" nullable="false" primaryKey="true"/>
       </column>
-      <column name="recipientid" type="uuid">
+      <column name="recipientid" type="BINARY(16)">
         <constraints nullable="false" />
       </column>
-      <column name="announcement_id" type="uuid">
+      <column name="announcement_id" type="BINARY(16)">
         <constraints nullable="false" foreignKeyName="fk_accouncementrecipient_announcement" referencedTableName="announcement" referencedColumnNames="id" />
       </column>
     </createTable>
 
     <createTable tableName="door">
-      <column name="id" type="uuid">
+      <column name="id" type="BINARY(16)">
         <constraints unique="true" nullable="false" primaryKey="true"/>
       </column>
       <column name="name" type="varchar(255)">
@@ -83,16 +83,16 @@
     </createTable>
     
     <createTable tableName="dooraction">
-      <column name="id" type="uuid">
+      <column name="id" type="BINARY(16)">
         <constraints unique="true" nullable="false" primaryKey="true"/>
       </column>
-      <column name="userid" type="uuid">
+      <column name="userid" type="BINARY(16)">
         <constraints nullable="false" />
       </column>
       <column name="type" type="varchar(255)">
         <constraints nullable="false"/>
       </column>
-      <column name="door_id" type="uuid">
+      <column name="door_id" type="BINARY(16)">
         <constraints foreignKeyName="fk_dooraction_door" referencedTableName="door" referencedColumnNames="id"/>
       </column>
       <column name="createdat" type="timestamp">
