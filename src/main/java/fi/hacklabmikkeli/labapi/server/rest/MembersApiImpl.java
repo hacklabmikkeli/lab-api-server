@@ -12,12 +12,14 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import fi.hacklabmikkeli.labapi.server.keycloak.KeycloakAdminController;
 import fi.hacklabmikkeli.labapi.server.members.MemberController;
 import fi.hacklabmikkeli.labapi.server.persistence.model.MemberStatus;
 import fi.hacklabmikkeli.labapi.server.rest.model.Member;
 import fi.hacklabmikkeli.labapi.server.rest.model.Member.StatusEnum;
 import fi.hacklabmikkeli.labapi.server.rest.model.MemberAction;
 import fi.hacklabmikkeli.labapi.server.rest.translate.MemberTranslator;
+import fi.hacklabmikkeli.labapi.server.stripe.StripeController;
 
 /**
  * Members REST service implementation
@@ -33,6 +35,12 @@ public class MembersApiImpl extends AbstractApi implements MembersApi {
 
   @Inject
   private MemberTranslator memberTranslator;
+
+  @Inject
+  private StripeController stripeController;
+
+  @Inject
+  private KeycloakAdminController keycloakAdminController;
 
   @Override
   public Response createMember(@Valid Member payload) throws Exception {
@@ -123,7 +131,7 @@ public class MembersApiImpl extends AbstractApi implements MembersApi {
 
   @Override
   public Response createMemberAction(UUID memberId, @Valid MemberAction payload) throws Exception {
-    if (!isRealmAdmin() && (!memberId.equals(getLoggerUserId()) || payload.getType() == MemberAction.TypeEnum.APPROVE)) {
+    if (!isRealmAdmin()) {
       return createForbidden(UNAUTHORIZED);
     }
 
@@ -141,32 +149,11 @@ public class MembersApiImpl extends AbstractApi implements MembersApi {
         if (memberEntity.getStatus() != MemberStatus.PENDING) {
           return createBadRequest("User is already approved");
         }
-        //TODO: add roles to keycloak
-        String stripeCustomerId = "customerid"; //TODO: create customer to stripe and subscribe to annual membership fee program
+
+        UUID userId = memberEntity.getId();
+        keycloakAdminController.addRealmRole(userId, "member");
+        String stripeCustomerId = stripeController.createCustomer(getLoggerUserEmail(), userId.toString()); 
         memberController.updateMember(memberEntity, stripeCustomerId, MemberStatus.MEMBER, OffsetDateTime.now());
-      break;
-      case START_SPACE_USAGE:
-        if (memberEntity.getStatus() == MemberStatus.PENDING) {
-          return createBadRequest("User is not yet approved");
-        }
-        if (memberEntity.getStatus() == MemberStatus.SPACE_USER) {
-          return createBadRequest("User is already space user");
-        }
-        //TODO: validate from stripe that user has valid payment source connected to customer, return bad request if not
-        //TODO: add roles to keycloak
-        memberController.updateMember(memberEntity, memberEntity.getStripeCustomerId(), MemberStatus.SPACE_USER, memberEntity.getApprovedAt());
-      break;
-      case CANCEL_SPACE_USAGE:
-        if (memberEntity.getStatus() != MemberStatus.SPACE_USER) {
-          return createBadRequest("User is not space user");
-        }
-        //TODO: remove roles from keycloak
-        //TODO: cancel space user programme from stripe
-        memberController.updateMember(memberEntity, memberEntity.getStripeCustomerId(), MemberStatus.MEMBER, memberEntity.getApprovedAt());
-      break;
-      case LEAVE:
-        //TODO: cancel all programmes from stripe and delete stripe customer. Also remove roles from keycloak
-        memberController.updateMember(memberEntity, null, MemberStatus.LEFT, memberEntity.getApprovedAt());
       break;
       default:
         return createBadRequest("Unkown user action");

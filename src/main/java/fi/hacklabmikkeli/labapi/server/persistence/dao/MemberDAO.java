@@ -11,6 +11,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.lang3.StringUtils;
+
 import fi.hacklabmikkeli.labapi.server.persistence.model.Member;
 import fi.hacklabmikkeli.labapi.server.persistence.model.MemberStatus;
 import fi.hacklabmikkeli.labapi.server.persistence.model.Member_;
@@ -42,6 +44,31 @@ public class MemberDAO extends AbstractDAO<Member> {
     member.setApprovedAt(approvedAt);
 
     return persist(member);
+  }
+
+  /**
+   * Finds member by stripe customer id
+   * 
+   * @param stripeCustomerId stripe customer id
+   * 
+   * @return member of null if not found
+   */
+  public Member findByStripeCustomerId(String stripeCustomerId) {
+    if (StringUtils.isBlank(stripeCustomerId)) {
+      return null;
+    }
+
+    EntityManager entityManager = getEntityManager();
+
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Member> criteria = criteriaBuilder.createQuery(Member.class);
+    Root<Member> root = criteria.from(Member.class);
+    criteria.select(root);
+    criteria.where(criteriaBuilder.equal(root.get(Member_.stripeCustomerId), stripeCustomerId));
+
+    TypedQuery<Member> query = entityManager.createQuery(criteria);
+
+    return query.getSingleResult();
   }
 
   /**

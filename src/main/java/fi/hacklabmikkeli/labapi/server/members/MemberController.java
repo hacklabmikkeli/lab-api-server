@@ -48,6 +48,17 @@ public class MemberController {
   }
 
   /**
+   * Finds member with stripe customer id
+   * 
+   * @param stripeCustomerId stripe customer id
+   * 
+   * @return member or null if not found
+   */
+  public Member findMemberByStripeId(String stripeCustomerId) {
+    return memberDAO.findByStripeCustomerId(stripeCustomerId);
+  }
+
+  /**
    * Lists members
    *
    * @param status user status (optional)
@@ -79,6 +90,18 @@ public class MemberController {
     memberDAO.updateStatus(member, status);
     memberDAO.updateApprovedAt(member, approvedAt);
     return member;
+  }
+
+  /**
+   * Updates member status
+   * 
+   * @param member member to update
+   * @param status new status
+   * 
+   * @return updated member
+   */
+  public Member updateStatus(Member member, MemberStatus status) {
+    return memberDAO.updateStatus(member, status);
   }
 
   /**

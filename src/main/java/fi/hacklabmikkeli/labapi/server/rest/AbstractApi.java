@@ -274,19 +274,7 @@ public abstract class AbstractApi {
    * @return whether logged user has specified realm role or not
    */
   protected boolean hasRealmRole(String... roles) {
-    HttpServletRequest request = getHttpServletRequest();
-    Principal userPrincipal = request.getUserPrincipal();
-    KeycloakPrincipal<?> kcPrincipal = (KeycloakPrincipal<?>) userPrincipal;
-    if (kcPrincipal == null) {
-      return false;
-    }
-    
-    KeycloakSecurityContext keycloakSecurityContext = kcPrincipal.getKeycloakSecurityContext();
-    if (keycloakSecurityContext == null) {
-      return false;
-    }
-
-    AccessToken token = keycloakSecurityContext.getToken();
+    AccessToken token = getAccessToken();
     if (token == null) {
       return false;
     }
@@ -303,6 +291,41 @@ public abstract class AbstractApi {
     }
     
     return false;
+  }
+
+  /**
+   * Gets logged users email address
+   * 
+   * @return logger users email address
+   */
+  protected String getLoggerUserEmail() {
+    AccessToken token = getAccessToken();
+    if (token == null) {
+      return null;
+    }
+
+    return token.getEmail();
+  }
+
+  /**
+   * Get current users access token
+   * 
+   * @return keycloak access token
+   */
+  protected AccessToken getAccessToken() {
+    HttpServletRequest request = getHttpServletRequest();
+    Principal userPrincipal = request.getUserPrincipal();
+    KeycloakPrincipal<?> kcPrincipal = (KeycloakPrincipal<?>) userPrincipal;
+    if (kcPrincipal == null) {
+      return null;
+    }
+    
+    KeycloakSecurityContext keycloakSecurityContext = kcPrincipal.getKeycloakSecurityContext();
+    if (keycloakSecurityContext == null) {
+      return null;
+    }
+
+    return keycloakSecurityContext.getToken();
   }
 
   /**

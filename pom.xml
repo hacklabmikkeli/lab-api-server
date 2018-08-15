@@ -81,6 +81,10 @@
     <!-- Paho -->
 
     <paho.version>1.2.0</paho.version>
+
+    <!-- Stripe -->
+
+    <stripe.version>6.3.0</stripe.version>
     
   </properties>
 
@@ -345,6 +349,14 @@
       <groupId>org.eclipse.paho</groupId>
       <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
       <version>${paho.version}</version>
+    </dependency>
+
+    <!-- Stripe -->
+
+    <dependency>
+      <groupId>com.stripe</groupId>
+      <artifactId>stripe-java</artifactId>
+      <version>${stripe.version}</version>
     </dependency>
 
   </dependencies>
