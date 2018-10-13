@@ -6,10 +6,10 @@ import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
 
-import fi.hacklabmikkeli.labapi.server.rest.model.Member;
+import fi.hacklabmikkeli.labapi.server.rest.model.Card;
 import fi.hacklabmikkeli.labapi.server.rest.model.Plan;
 import fi.hacklabmikkeli.labapi.server.rest.model.Product;
-import fi.hacklabmikkeli.labapi.server.rest.model.Member.StatusEnum;
+import fi.hacklabmikkeli.labapi.server.rest.model.Subscription;
 
 /**
  * Translates Stripe entites to lab api REST entities
@@ -76,6 +76,60 @@ public class StripeTranslator extends AbstractTranslator {
    */
   public List<Plan> translatePlans(List<com.stripe.model.Plan> planModels) {
     return planModels.stream().map(this::translatePlan).collect(Collectors.toList());
+  }
+
+  /**
+   * Translates Stripe card into lab api rest card
+   * 
+   * @param cardModel Stripe card
+   * @return translated lab api rest card
+   */
+  public Card translateCard(com.stripe.model.Card cardModel) {
+    if (cardModel == null) {
+      return null;
+    }
+
+    Card result = new Card();
+    result.setBrand(cardModel.getBrand());
+    result.setId(cardModel.getId());
+    result.setLast4(cardModel.getLast4());
+    
+    return result;
+  }
+
+  /**
+   * Translates list of Stripe cards into lab api rest cards
+   * 
+   * @param cardModels List of Stripe cards
+   * @return List of translated lab api rest cards
+   */
+  public List<Card> translateCards(List<com.stripe.model.Card> cardModels) {
+    return cardModels.stream().map(this::translateCard).collect(Collectors.toList());
+  }
+
+  /**
+   * Translates Stripe subscription into lab api rest subscription
+   * 
+   * @param subscriptionModel Stripe subscription model
+   * @return translated lap api rest subscription
+   */
+  public Subscription translateSubscription(com.stripe.model.Subscription subscriptionModel) {
+    Subscription result = new Subscription();
+    result.setCancelAtPeriodEnd(subscriptionModel.getCancelAtPeriodEnd());
+    result.setId(subscriptionModel.getId());
+    result.setPlanId(subscriptionModel.getPlan().getId());
+    
+    return result;
+  }
+
+  /**
+   * Translates list of Stripe subscriptions into lab api rest subcscriptions
+   * 
+   * @param subscriptionModels list of String subsscriptions
+   * @return list of translated lab api rest subscriptions
+   */
+  public List<Subscription> translateSubscriptions(List<com.stripe.model.Subscription> subscriptionModels) {
+    return subscriptionModels.stream().map(this::translateSubscription).collect(Collectors.toList());
   }
 
   /**
