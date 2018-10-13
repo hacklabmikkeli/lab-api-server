@@ -14,6 +14,8 @@ import javax.persistence.PreUpdate;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import lombok.Data;
+
 /**
  * @author Heikki Kurhinen
  * 
@@ -22,6 +24,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Cacheable(true)
 @Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
+@Data
 public class Announcement {
 
   @Id
@@ -40,76 +43,6 @@ public class Announcement {
 
   @Column (nullable = false)
   private OffsetDateTime modifiedAt;
-
-  /**
-   * @return the id
-   */
-  public UUID getId() {
-    return id;
-  }
-
-  /**
-   * @param id the id to set
-   */
-  public void setId(UUID id) {
-    this.id = id;
-  }
-
-  /**
-   * @return the content
-   */
-  public String getContent() {
-    return content;
-  }
-
-  /**
-   * @param content the content to set
-   */
-  public void setContent(String content) {
-    this.content = content;
-  }
-
-  /**
-   * @return the type
-   */
-  public AnnouncementType getType() {
-    return type;
-  }
-
-  /**
-   * @param type the type to set
-   */
-  public void setType(AnnouncementType type) {
-    this.type = type;
-  }
-
-  /**
-   * @return the createdAt
-   */
-  public OffsetDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-  /**
-   * @param createdAt the createdAt to set
-   */
-  public void setCreatedAt(OffsetDateTime createdAt) {
-    this.createdAt = createdAt;
-  }
-
-  /**
-   * @return the modifiedAt
-   */
-  public OffsetDateTime getModifiedAt() {
-    return modifiedAt;
-  }
-
-  /**
-   * @param modifiedAt the modifiedAt to set
-   */
-  public void setModifiedAt(OffsetDateTime modifiedAt) {
-    this.modifiedAt = modifiedAt;
-  }
 
   @PrePersist
   public void onCreate() {

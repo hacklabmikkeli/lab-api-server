@@ -13,6 +13,8 @@ import javax.persistence.PrePersist;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import lombok.Data;
+
 /**
  * @author Heikki Kurhinen
  * 
@@ -21,6 +23,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Cacheable(true)
 @Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
+@Data
 public class DoorAction {
 
   @Id
@@ -38,75 +41,6 @@ public class DoorAction {
 
   @Column (nullable = false)
   private OffsetDateTime createdAt;
-  /**
-   * @return the id
-   */
-  public UUID getId() {
-    return id;
-  }
-
-  /**
-   * @param id the id to set
-   */
-  public void setId(UUID id) {
-    this.id = id;
-  }
-
-  /**
-   * @return the userId
-   */
-  public UUID getUserId() {
-    return userId;
-  }
-
-  /**
-   * @param userId the userId to set
-   */
-  public void setUserId(UUID userId) {
-    this.userId = userId;
-  }
-
-  /**
-   * @return the door
-   */
-  public Door getDoor() {
-    return door;
-  }
-
-  /**
-   * @param door the door to set
-   */
-  public void setDoor(Door door) {
-    this.door = door;
-  }
-
-  /**
-   * @return the type
-   */
-  public DoorActionType getType() {
-    return type;
-  }
-
-  /**
-   * @param type the type to set
-   */
-  public void setType(DoorActionType type) {
-    this.type = type;
-  }
-
-  /**
-   * @return the createdAt
-   */
-  public OffsetDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-  /**
-   * @param createdAt the createdAt to set
-   */
-  public void setCreatedAt(OffsetDateTime createdAt) {
-    this.createdAt = createdAt;
-  }
 
   @PrePersist
   public void onCreate() {

@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import lombok.Data;
+
 /**
  * @author Heikki Kurhinen
  * 
@@ -19,6 +21,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Cacheable(true)
 @Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
+@Data
 public class AnnouncementRecipient {
 
   @Id
@@ -31,45 +34,4 @@ public class AnnouncementRecipient {
   @ManyToOne(optional = false)
   private Announcement announcement;
 
-   /**
-   * @return the id
-   */
-  public UUID getId() {
-    return id;
-  }
-
-  /**
-   * @return the recipientId
-   */
-  public UUID getRecipientId() {
-    return recipientId;
-  }
-
-  /**
-   * @param recipientId the recipientId to set
-   */
-  public void setRecipientId(UUID recipientId) {
-    this.recipientId = recipientId;
-  }
-
-  /**
-   * @return the announcement
-   */
-  public Announcement getAnnouncement() {
-    return announcement;
-  }
-
-  /**
-   * @param announcement the announcement to set
-   */
-  public void setAnnouncement(Announcement announcement) {
-    this.announcement = announcement;
-  }
-
-  /**
-   * @param id the id to set
-   */
-  public void setId(UUID id) {
-    this.id = id;
-  }
 }

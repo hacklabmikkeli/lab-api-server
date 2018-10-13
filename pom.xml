@@ -85,6 +85,10 @@
     <!-- Stripe -->
 
     <stripe.version>6.3.0</stripe.version>
+
+    <!--Lombok -->
+
+    <lombok.version>1.18.2</lombok.version>
     
   </properties>
 
@@ -131,6 +135,7 @@
     </plugins>
   </build>
   <dependencies>
+    
     <dependency>
       <groupId>org.jboss.spec.javax.servlet</groupId>
       <artifactId>jboss-servlet-api_3.1_spec</artifactId>
@@ -357,6 +362,15 @@
       <groupId>com.stripe</groupId>
       <artifactId>stripe-java</artifactId>
       <version>${stripe.version}</version>
+    </dependency>
+
+    <!-- Lombok -->
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+      <scope>provided</scope>
     </dependency>
 
   </dependencies>
