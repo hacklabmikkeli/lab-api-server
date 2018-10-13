@@ -1,6 +1,7 @@
 package fi.hacklabmikkeli.labapi.server.stripe;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -10,6 +11,10 @@ import javax.inject.Inject;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Customer;
+import com.stripe.model.Plan;
+import com.stripe.model.PlanCollection;
+import com.stripe.model.Product;
+import com.stripe.model.ProductCollection;
 
 import org.slf4j.Logger;
 
@@ -29,7 +34,7 @@ public class StripeController {
     Stripe.apiKey = systemSettingController.getSettingValue(StripeConsts.STRIPE_API_KEY_SETTING);
   }
 
-  public String createCustomer(String email, String keycloakUserId) {
+  public Customer createCustomer(String email, String keycloakUserId) {
     Map<String, Object> customerParams = new HashMap<String, Object>();
     customerParams.put("email", email);
 
@@ -38,10 +43,42 @@ public class StripeController {
     customerParams.put("metadata", customerMeta);
 
     try {
-      Customer customer = Customer.create(customerParams);
-      return customer.getId();
+      return Customer.create(customerParams);
     } catch (StripeException e) {
       logger.error("Error creating stripe customer", e);
+    }
+
+    return null;
+  }
+
+  public List<Product> listProducts() {
+    Map<String, Object> productParams = new HashMap<String, Object>();
+    productParams.put("active", "true");
+
+    try {
+      ProductCollection products = Product.list(productParams);
+      return products.getData();
+    } catch (StripeException e) {
+      logger.error("Error listing products from stripe", e);
+    }
+
+    return null;
+  }
+
+  public List<Plan> listPlans(String productId) {
+    if (productId == null) {
+      logger.error("Listing plans without product id is not supported");
+      return null;
+    }
+
+    Map<String, Object> planParams = new HashMap<String, Object>();
+    planParams.put("product", productId);
+
+    try {
+      PlanCollection plans = Plan.list(planParams);
+      return plans.getData();
+    } catch (StripeException e) {
+      logger.error("Error listing plans from stripe", e);
     }
 
     return null;
