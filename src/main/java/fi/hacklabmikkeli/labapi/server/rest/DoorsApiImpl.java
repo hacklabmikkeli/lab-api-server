@@ -37,7 +37,7 @@ public class DoorsApiImpl extends AbstractApi implements DoorsApi {
   private MqttController mqttController;
 
   @Override
-  public Response createDoor(@Valid Door payload) throws Exception {
+  public Response createDoor(@Valid Door payload) {
     if (!isRealmAdmin()) {
       return createForbidden(UNAUTHORIZED);
     }
@@ -49,7 +49,7 @@ public class DoorsApiImpl extends AbstractApi implements DoorsApi {
   }
 
   @Override
-  public Response createDoorAction(UUID doorId, @Valid DoorAction payload) throws Exception {
+  public Response createDoorAction(UUID doorId, @Valid DoorAction payload) {
     if (!isSpaceUser()) {
       return createForbidden(UNAUTHORIZED);
     }
@@ -68,7 +68,7 @@ public class DoorsApiImpl extends AbstractApi implements DoorsApi {
   }
 
   @Override
-  public Response deleteDoor(UUID doorId) throws Exception {
+  public Response deleteDoor(UUID doorId) {
     if (!isRealmAdmin()) {
       return createForbidden(UNAUTHORIZED);
     }
@@ -83,7 +83,7 @@ public class DoorsApiImpl extends AbstractApi implements DoorsApi {
   }
 
   @Override
-  public Response findDoor(UUID doorId) throws Exception {
+  public Response findDoor(UUID doorId) {
     fi.hacklabmikkeli.labapi.server.persistence.model.Door doorEntity = doorController.findDoor(doorId);
     if (doorEntity == null) {
       return createNotFound(NOT_FOUND_MESSAGE);
@@ -93,12 +93,12 @@ public class DoorsApiImpl extends AbstractApi implements DoorsApi {
   }
 
   @Override
-  public Response listDoors(Long firstResult, Long maxResults) throws Exception {
+  public Response listDoors(Long firstResult, Long maxResults) {
     return createOk(doorTranslator.translateDoors(doorController.listDoors(firstResult, maxResults)));
   }
 
   @Override
-  public Response updateDoor(UUID doorId, @Valid Door payload) throws Exception {
+  public Response updateDoor(UUID doorId, @Valid Door payload) {
     if (!isRealmAdmin()) {
       return createForbidden(UNAUTHORIZED);
     }

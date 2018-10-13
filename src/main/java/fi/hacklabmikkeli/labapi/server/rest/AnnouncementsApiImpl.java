@@ -32,7 +32,7 @@ public class AnnouncementsApiImpl extends AbstractApi implements AnnouncementsAp
   private AnnouncementTranslator announcementTranslator;
 
   @Override
-  public Response createAnnouncement(@Valid Announcement payload) throws Exception {
+  public Response createAnnouncement(@Valid Announcement payload) {
     if (!isRealmAdmin()) {
       return createForbidden(UNAUTHORIZED);
     }
@@ -48,7 +48,7 @@ public class AnnouncementsApiImpl extends AbstractApi implements AnnouncementsAp
   }
 
   @Override
-  public Response deleteAnnouncement(UUID announcementId) throws Exception {
+  public Response deleteAnnouncement(UUID announcementId) {
     if (!isRealmAdmin()) {
       return createForbidden(UNAUTHORIZED);
     }
@@ -63,7 +63,7 @@ public class AnnouncementsApiImpl extends AbstractApi implements AnnouncementsAp
   }
 
   @Override
-  public Response findAnnouncement(UUID announcementId) throws Exception {
+  public Response findAnnouncement(UUID announcementId) {
     fi.hacklabmikkeli.labapi.server.persistence.model.Announcement announcementEntity = announcementController.findAnnouncement(announcementId);
     if (announcementEntity == null) {
       return createNotFound(NOT_FOUND_MESSAGE);
@@ -74,7 +74,7 @@ public class AnnouncementsApiImpl extends AbstractApi implements AnnouncementsAp
   }
 
   @Override
-  public Response listAnnouncements(Long firstResult, Long maxResults) throws Exception {
+  public Response listAnnouncements(Long firstResult, Long maxResults) {
     List<fi.hacklabmikkeli.labapi.server.persistence.model.Announcement> announcementEntities = announcementController.listAnnouncements(firstResult, maxResults);
     return createOk(announcementEntities.stream()
       .map(announcementEntity -> 
