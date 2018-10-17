@@ -311,7 +311,7 @@ public class MembersApiImpl extends AbstractApi implements MembersApi {
       return createBadRequest("Cannot update subscription without stripe customer id");
     }
 
-    com.stripe.model.Subscription subscription = stripeController.updateSubscription(memberEntity.getStripeCustomerId(), subscriptionId, payload.isCancelAtPeriodEnd());
+    com.stripe.model.Subscription subscription = stripeController.updateSubscription(memberEntity.getStripeCustomerId(), subscriptionId, payload.CancelAtPeriodEnd());
     if (subscription == null) {
       return createInternalServerError("Error updating subscription");
     }

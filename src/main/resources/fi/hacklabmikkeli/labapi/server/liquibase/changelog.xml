@@ -6,7 +6,7 @@
       <column name="id" type="BINARY(16)">
         <constraints unique="true" nullable="false" primaryKey="true"/>
       </column>
-      <column name="settingkey" type="varchar(255)">
+      <column name="settingkey" type="varchar(191)">
         <constraints nullable="false"/>
       </column>
       <column name="value" type="longtext">
@@ -20,10 +20,10 @@
       <column name="id" type="BINARY(16)">
         <constraints unique="true" nullable="false" primaryKey="true"/>
       </column>
-      <column name="stripecustomerid" type="varchar(255)">
+      <column name="stripecustomerid" type="varchar(191)">
         <constraints nullable="true" />
       </column>
-      <column name="status" type="varchar(255)">
+      <column name="status" type="varchar(191)">
         <constraints nullable="false"/>
       </column>
       <column name="createdat" type="timestamp">
@@ -41,7 +41,7 @@
       <column name="content" type="longtext">
         <constraints nullable="false"/>
       </column>
-      <column name="type" type="varchar(255)">
+      <column name="type" type="varchar(191)">
         <constraints nullable="false"/>
       </column>
       <column name="createdat" type="timestamp">
@@ -68,7 +68,7 @@
       <column name="id" type="BINARY(16)">
         <constraints unique="true" nullable="false" primaryKey="true"/>
       </column>
-      <column name="name" type="varchar(255)">
+      <column name="name" type="varchar(191)">
         <constraints nullable="false"/>
       </column>
       <column name="lastping" type="timestamp">
@@ -89,7 +89,7 @@
       <column name="userid" type="BINARY(16)">
         <constraints nullable="false" />
       </column>
-      <column name="type" type="varchar(255)">
+      <column name="type" type="varchar(191)">
         <constraints nullable="false"/>
       </column>
       <column name="door_id" type="BINARY(16)">
